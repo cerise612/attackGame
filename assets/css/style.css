@@ -1,0 +1,80 @@
+
+ body { 
+    background: url("https://vignette.wikia.nocookie.net/mlp/images/2/25/Cataratas_de_arco%C3%ADris_de_Winsome_Falls_IEP.png/revision/latest?cb=20160502084122&path-prefix=es");
+    background-repeat:no-repeat;
+    background-position: center; 
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  } 
+h1{
+    font-family: 'Fascinate', cursive;
+    text-align: center;
+    font-size: 75px;
+    color: blueviolet;
+    text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+/* kittens */
+#mittensImage{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: auto;
+}
+#sirMeowsALotImage{
+    height: auto; 
+}
+#fergusImage{
+    height: auto;
+}
+#catBenetarImage{
+    height: auto;
+}
+#jellyBeanImage{
+    height: auto;
+}
+h5{
+    font-family: 'Give You Glory', cursive;
+    text-align: center;
+    font-size: 15px;
+}
+.card{
+    border-bottom-style: ridge;
+    border-color: red;
+    text-align: center;
+}
+
+h3{
+    font-family: 'Roboto', sans-serif;
+}
+h2{
+    font-family: 'Fascinate', cursive;
+    text-align: center;
+    font-size: xx-large;
+    color: red;
+    text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;  
+}
+P{
+    font-family: 'Roboto', sans-serif;
+}
+/* battlefield */
+#gameStats{
+    margin-top: 20px;
+    float: left;
+}
+#arena{
+    margin-top: 20px;
+    float: left;
+}

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="assets/css/reset.css" type="text/css" rel="stylesheet">
+    <link href="assets/css/style.css" type="text/css" rel="stylesheet">
+    
+    <title>Kittens Attack!</title>
+  </head>
+  <body>
+    <h1>Kittens Attack!</h1>
+  <!-- holder for container box -->
+  <div id="box"></div>
+  <!-- Use name and class to handle more than one balls -->
+  <img class="ball" id="ball1" src="D:\Bootcamp\Work\unit_4_game\assets\images\kitten8.jpg" alt="ball">
+  <img class="ball" id="ball2" src="D:\Bootcamp\Work\unit_4_game\assets\images\kitten8.jpg" alt="ball">
+    <style>
+    #box {  /* The container box */
+  position: absolute;
+  border: thick solid;
+  border-color: red;
+}
+ 
+/* The ball image.
+ * Use class selector to handle more than one balls
+*/
+img.ball {
+  position: absolute;
+}
+
+
+    </style>
+    <script>
+    // JSBouncingBallSimple.js
+window.onload = init;
+ 
+ // Constants to define the box dimensions
+ const MIN_X = 20;
+ const MIN_Y = 80;
+ const WIDTH = 1000;
+ const HEIGHT = 700;
+ const MAX_X = MIN_X + WIDTH - 1;
+ const MAX_Y = MIN_Y + HEIGHT - 1;
+  
+ // The ball
+ var ballRadius = 100;
+ var ballSize = ballRadius*4 + 1;
+ // Randomly place the initial ball within the box, slightly off from border
+ var ballCenterX = (WIDTH - 2*ballSize)*Math.random() + (MIN_X + ballSize);
+ var ballCenterY = (HEIGHT - 2*ballSize)*Math.random() + (MIN_Y + ballSize);
+ // Initial speed
+ var ballSpeedX = 8;
+ var ballSpeedY = 6;
+  
+ function init() {
+    var box = document.getElementById("box");
+    // Position the box absolutely via CSS style
+    box.style.left = (MIN_X - 5) + "px";  // unit in px (pixels)
+    box.style.top = (MIN_Y - 5) + "px";
+    box.style.width = WIDTH + "px";
+    box.style.height = HEIGHT + "px";
+  
+    var balls = document.getElementsByClassName("ball");
+    // Position the ball image absolutely via CSS style
+    balls[0].style.left = (ballCenterX - ballRadius) + "px";
+    balls[0].style.top  = (ballCenterY - ballRadius) + "px";
+    balls[0].style.width = ballSize + "px";
+    balls[0].style.height = ballSize + "px";
+  
+    moveOneStep();
+ }
+  
+ function moveOneStep() {
+    // Calculate the ball's new position
+    ballCenterX += ballSpeedX;
+    ballCenterY += ballSpeedY;
+    // Check if the ball moves over the bounds
+    // If so, adjust the position and speed.
+    if (ballCenterX - ballRadius < MIN_X) {
+       ballSpeedX = -ballSpeedX; // Reflect along normal
+       ballCenterX = MIN_X + ballRadius; // Re-position the ball at the edge
+    } else if (ballCenterX + ballRadius > MAX_X) {
+       ballSpeedX = -ballSpeedX;
+       ballCenterX = MAX_X - ballRadius;
+    }
+    // May cross both x and y bounds
+    if (ballCenterY - ballRadius < MIN_Y) {
+       ballSpeedY = -ballSpeedY;
+       ballCenterY = MIN_Y + ballRadius;
+    } else if (ballCenterY + ballRadius > MAX_Y) {
+       ballSpeedY = -ballSpeedY;
+       ballCenterY = MAX_Y - ballRadius;
+    }
+  
+    var balls = document.getElementsByClassName("ball");
+    balls[0].style.left = (ballCenterX - ballRadius) + "px";
+    balls[0].style.top  = (ballCenterY - ballRadius) + "px";
+  
+    // Recursively call move after the specified msec
+    setTimeout("moveOneStep()", 60);
+ }
+
+
+    </script>
+    <!-- Optional JavaScript --> 
+    <!-- <script src="assets/javascript/game.js" type="text/javascript"></script> -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  </body>
+</html>
