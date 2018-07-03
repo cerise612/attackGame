@@ -78,3 +78,31 @@ P{
     margin-top: 20px;
     float: left;
 }
+#playerKitten{
+    width: 300px;
+    height: 400px; 
+}
+#availableOpponents{
+ text-align: center;  
+}
+#selectedOpponent{
+    width: 300px;
+    height: 400px;    
+}
+#battleStats{
+    width: 300px;
+    height: 200px;     
+}
+
+/* bouncing cat arena */
+/* The container battleArena */
+#battleArena {  
+    position: absolute;
+  }
+   
+  /* The kitten image.
+   * Use class selector to handle more than one kitten
+  */
+  img.kittenImage {
+    position: absolute;
+  }
