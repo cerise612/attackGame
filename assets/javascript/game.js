@@ -1,147 +1,204 @@
-var attackKittens = [
-     {
-        name: "Mittens",
-        healthPoints: 90,
-        attackPower: 7,
-        imageUrl: "assets/images/kitten8.png",
-        counterAttackPower: 5,
+// Global variables for html objects
+var enemyLineDiv = $("#enemy-line");
+var challengerLineDiv = $("#challenger-line");
+var defenderLineDiv = $("#defender-line")
+var topLineDiv = $("#top-line")
+var resetButton = $("#bb-reset")
+
+var currentBattleInProgress = false; // If True, a battle is in progress and enemy line clicks are ignored.
+
+var batmanCharacters = {
+
+    init: function () {
+        this.batmansInfo = [];
+        this.batmanChallenger = [];
+        this.batmanDefender = [];
+        this.remainingBatmen = 0;
+        this.loadBatmans();
     },
-     {
-        name: "Sir Meows A Lot",
-        healthPoints: 104,
-        attackPower: 7,
-        imageUrl: "assets/images/kitten9.png",
-        counterAttackPower: 8,
+
+    // Takes in the name, moves that batman to batmanChallenger and pops it from the array.
+    setChallenger: function (batmanName) {
+        for (var i = 0; i < this.remainingBatmen; i++) {
+            if (batmanName === this.batmansInfo[i].name) {
+                this.batmanChallenger[0] = this.batmansInfo[i];
+                this.batmansInfo.splice(i, 1);
+                this.remainingBatmen = this.batmansInfo.length;
+                return;
+            }
+        }
     },
-    {
-        name: "Fergus",
-        healthPoints: 150,
-        attackPower: 5,
-        imageUrl: "assets/images/kitten2.png",
-        counterAttackPower: 2,
+
+    // Takes in the name, moves that batman to batmanDefender and pops it from the array.
+    setDefender: function (batmanName) {
+        for (var i = 0; i < this.remainingBatmen; i++) {
+
+            if (batmanName === this.batmansInfo[i].name) {
+                this.batmanDefender[0] = this.batmansInfo[i];
+                this.batmansInfo.splice(i, 1);
+                this.remainingBatmen = this.batmansInfo.length;
+                return;
+            }
+        }
+
     },
-     {
-        name: "Cat Benetar",
-        healthPoints: 124,
-        attackPower: 4,
-        imageUrl: "assets/images/kitten5.png",
-        counterAttackPower: 4,
-    },
-    {
-        name: "Jelly Bean",
-        healthPoints: 110,
-        attackPower: 17,
-        imageUrl: "assets/images/kitten3.png",
-        counterAttackPower: 10,
+
+    loadBatmans: function () {
+        this.batmansInfo = [
+            { name: "West", healthPoints: 100, attackPoints: 10, counterAttackPoints: 15, imageFile: "assets/images/west.png", isAlive: true },
+            { name: "Keaton", healthPoints: 100, attackPoints: 10, counterAttackPoints: 20, imageFile: "assets/images/Keaton.png", isAlive: true },
+            { name: "Kilmer", healthPoints: 80, attackPoints: 9, counterAttackPoints: 25, imageFile: "assets/images/kilmer.png", isAlive: true },
+            { name: "Bale", healthPoints: 150, attackPoints: 30, counterAttackPoints: 10, imageFile: "assets/images/bale.png", isAlive: true }];
+        this.remainingBatmen = this.batmansInfo.length;
     }
-];
-
-
-
-
-// var availableOpponents = [];
-var selectedOpponent = [];
-var playerKitten = [];
-
-
-// //don't load js until html and css are loaded.  set attackKittens in div when page loads
-$(document).ready(function () {
-
-createKittens = function(){
- console.log("working")
-
-    for (i = 0; i < attackKittens.length; i++) {
-       $("#availableOpponents").append("<div class='col-sm-2 pick-kitten'>"+
-                                     "<div class='imageUrl kittenImage'>" +
-                                        "<img src='"+ attackKittens[i].imageUrl +"' class='image' alt='kitten'>" +
-                                     "</div>" +
-                                     "<div class='card statBox' style='width: 10rem;'>" +
-                                     "<div class='card-body'>" +
-                                        "<h5 class='card-title kittenName'>" +
-                                            "<h5>"+ attackKittens[i].name +"</h5>" +
-                                            "<p class='card-text battleWounds'></p>" +
-                                      "</div>" +
-                                      "<ul class='list-group list-group-flush'>" +
-                                        "<li class='list-group-item' id='kittenHealth'>health:"+ attackKittens[i].healthPoints +"</li>" +
-                                       "</ul>" +
-                                    "</div>" +
-                                    "</div>"
-       )
-    } 
-console.log("test")
-   
-    // $("#mittensHealth").append(attackKittens.mittens.healthPoints);
-    // $("#sirMeowsALotHealth").append(attackKittens.sirMeowsALot.healthPoints);
-    // $("#fergusHealth").append(attackKittens.fergus.healthPoints);
-    // $("#catBenetarHealth").append(attackKittens.catBenetar.healthPoints);
-    // $("#jellyBeanHealth").append(attackKittens.jellyBean.healthPoints);
 
 }
-createKittens();
-    console.log("working");
 
+// Can load any character box with batman object and html elements as strings.
+function loadCharBox(batmanIndex, blockName, blockIMG, blockHP) {
+    var nameBlock = $(blockName);
+    var blockIMG = $(blockIMG);
+    var blockHP = $(blockHP);
+    nameBlock.addClass("class", "characterName")
+    nameBlock.text(batmanCharacters.batmansInfo[batmanIndex].name);
+    blockIMG.attr("alt", batmanCharacters.batmansInfo[batmanIndex].name);
+    blockIMG.attr("src", batmanCharacters.batmansInfo[batmanIndex].imageFile);
+    blockHP.text(batmanCharacters.batmansInfo[batmanIndex].healthPoints);
+}
 
-    //1.when player selects one kitten from attackKittens move the selected kitten to the playerKitten div
+function loadChallengerBox() {
+    var nameBlock = $("#challenger-h4");
+    var blockIMG = $("#challenger-image");
+    var blockHP = $("#challenger-health");
+    nameBlock.addClass(batmanCharacters.batmanChallenger[0].name);
+    nameBlock.text(batmanCharacters.batmanChallenger[0].name);
+    blockIMG.attr("alt", batmanCharacters.batmanChallenger[0].name);
+    blockIMG.attr("src", batmanCharacters.batmanChallenger[0].imageFile);
+    blockHP.text(batmanCharacters.batmanChallenger[0].healthPoints);
+}
 
-    var isSelected = false
-    $(".pick-kitten").click(function() {
-        console.log(isSelected)
-        if (playerKitten === undefined) {
-           
-            console.log("#availableOpponents")
+function loadDefenderBox() {
+    var nameBlock = $("#defender-h4");
+    var blockIMG = $("#defender-image");
+    var blockHP = $("#defender-health");
+    nameBlock.addClass(batmanCharacters.batmanDefender[0].name);
+    nameBlock.text(batmanCharacters.batmanDefender[0].name);
+    blockIMG.attr("alt", batmanCharacters.batmanDefender[0].name);
+    blockIMG.attr("src", batmanCharacters.batmanDefender[0].imageFile);
+    blockHP.text(batmanCharacters.batmanDefender[0].healthPoints);
+    $("#bb-attack").show();
+}
+
+function attack() {
+    // Update Health Points
+    batmanCharacters.batmanChallenger[0].healthPoints -= batmanCharacters.batmanDefender[0].counterAttackPoints;
+    batmanCharacters.batmanDefender[0].healthPoints -= batmanCharacters.batmanChallenger[0].attackPoints;
+    // Double Challenger attack points
+    batmanCharacters.batmanChallenger[0].attackPoints = batmanCharacters.batmanChallenger[0].attackPoints * 2;
+    // Check to see if the challenger is still dead, kill the game if not.
+    if (batmanCharacters.batmanChallenger[0].healthPoints <= 0) {
+        $("#challenger-health").text("Dead");
+        alert("You have been defeated.. but at least George Clooney or Ben Affleck didn't win.\nSelect restart to try again!");
+        $("#bb-attack").hide();
+        resetButton.show();
+    }
+    // Check to see if challenger is still alive, if no more enemies remain, stop the game.
+    else if (batmanCharacters.batmanDefender[0].healthPoints <= 0 && batmanCharacters.remainingBatmen === 0) {
+        alert("You are victorious!\nSelect Restart to try again!");
+        currentBattleInProgress = false;
+        $("#lu-defender").hide();
+        challengerLineDiv.hide();
+        $("#challenger-health").text(batmanCharacters.batmanChallenger[0].healthPoints);
+        //Show the reset button, hide the attack.
+        $("#Opponent-H").hide();
+        $("#bb-attack").hide();
+        resetButton.show();
+    }
+    // Check to see if challenger is still alive, let player select new defender if he is
+    else if (batmanCharacters.batmanDefender[0].healthPoints <= 0) {
+        alert("Select your next opponent.");
+        currentBattleInProgress = false;
+        defenderLineDiv.hide();
+        $("#challenger-health").text(batmanCharacters.batmanChallenger[0].healthPoints);
+    }
+    else {
+        $("#challenger-health").text(batmanCharacters.batmanChallenger[0].healthPoints);
+        $("#defender-health").text(batmanCharacters.batmanDefender[0].healthPoints);
+    }
+}
+
+// Initial Page Load function;
+function initialLineupLoad() {
+    var countOfBatmans = batmanCharacters.remainingBatmen;
+    for (var i = 1; i <= countOfBatmans; i++) {
+        loadCharBox(i - 1, "#char-" + i + "-h4", "#char-" + i + "-image", "#char-" + i + "-health");
+    }
+}
+
+// Create and Initialize the Game.
+var batmanCharacters = Object.create(batmanCharacters);
+batmanCharacters.init();
+enemyLineDiv.hide();
+challengerLineDiv.hide();
+defenderLineDiv.hide();
+resetButton.hide();
+
+initialLineupLoad();
+
+// Listener
+$(document).ready(function () {
+    // Look for the click on the line-up to pick a challenger
+    $(".lineup").on("click", function (e) {
+        // Set the challenger and load the applicable HTML
+        batmanCharacters.setChallenger($(this).children("h4.characterName").text());
+        loadChallengerBox();
+        // Load the Enemies
+        var countOfBatmans = batmanCharacters.remainingBatmen;
+        for (var i = 1; i <= countOfBatmans; i++) {
+            loadCharBox(i - 1, "#enemy-" + i + "-h4", "#enemy-" + i + "-image", "#enemy-" + i + "-health");
         }
-        else {
-            $("#availableOpponents").remove()
-            $(playerKitten).append($(this));
-        }
-    });
-    console.log("selected " + playerKitten);
+        topLineDiv.hide();
+        enemyLineDiv.show();
+        challengerLineDiv.show();
+    }),
+        $(".enemies").on("click", function (e) {
+            if (currentBattleInProgress === false) {
+                batmanCharacters.setDefender($(this).children("h4.characterName").text());
+                loadDefenderBox();
+                $(this).hide();
+                defenderLineDiv.show();
+                currentBattleInProgress = true;
+                // Hide the Enemy Line if no Enemeies are left
+                if (batmanCharacters.remainingBatmen < 1) {
+                    enemyLineDiv.hide();
+                }
+            }
+        }),
+        $("#bb-attack").on("click", function (e) {
+            attack();
+        })
+    $("#bb-reset").on("click", function (e) {
+        // Rehide everything on the screen
+        // Start things over.
+        batmanCharacters.batmanChallenger = [];
+        batmanCharacters.batmanDefender = [];
+        batmanCharacters.batmansInfo = [];
+        currentBattleInProgress = false;
+        topLineDiv.show();
+        $("#Opponent-H").show();
+        $("#lu-enemyone").show();
+        $("#lu-enemytwo").show();
+        $("#lu-enemythree").show();
+        $("#lu-defender").show();
+        enemyLineDiv.hide();
+        challengerLineDiv.hide();
+        defenderLineDiv.hide();
+        resetButton.hide();
+        $("#bb-attack").show();
 
-    //2.when player selects one kitten from availableOpponents div move the selected kitten to the selectedOpponent div
+        batmanCharacters.init();
 
+        initialLineupLoad();
 
-//     $(availableOpponents).on('click', function () {
-//         $(selectedOpponent).append(this)
-//     });
-//     console.log('selectedOpponent')
-
-
-//     //3.on click attackButton show updates to health points for playerKitten + selectedOpponent.  insert text "You attacked [name] for # damage. [name] attacked you for # damage."
-//     $('#attackButton').on('click', function () {
-//         var playerKittenDamage = healthPoints - selectedOpponent.counterAttackPower;
-//         var selectedOponentDamage = healthPoints - num;
-
-//         if (playerKitten) {
-//             $(Health).append(playerKittenDamage);
-//             document.write("You attacked" + selectedOpponent.name + "for" + electedOponentDamage + "damage." + selectedOpponent.name + "attacked you for" + playerKittenDamage + "damage.")
-//         }
-//         else (selectedOpponent) {
-//             $(Health).append(selectedOponentDamage);
-//         };
-//         $('#battleStats').append(this)
-//     });
-//     console.log('battleStats')
-//     //4.on click attackButton bounce kittens in battleArena
-//     //link bouncing_cat
-
-
-//     //5.each subsequent on click attackButton stack attackPower to incrementally power up playerKitten
-//     var num = playerKitten.attackPower;
-//     num += num;
-//     //6.if playerKitten healthPoints are <=0 insert text "oh, Noes!!! You have been defeated." show restarGame button
-//     if (playerKitten.Health <= 0) {
-//         document.write("oh, Noes!!! You have been defeated.");
-//     }
-//     //7.if selectedOpponent healthPoints are <=0 hide selectedOpponent. insert text "You have defeated [name] attack another opponent."
-//     else (selectedOpponent.Health <= 0) {
-//         document.write("You have defeated" + selectedOpponent.name + " attack another opponent."); $(selectedOpponent).hide();
-//     }
-
-//     //8.on click repeat steps 3-8 until playerKitten healthPoints are <=0 or no kittens remain in availableOpponents.  insert text "You reign Attack Kitten Supreme, Huzzah!!"
-//     if (availableOpponents === undefined || availableOpponents.length == 0) {
-//         document.write("You reign Attack Kitten Supreme, Huzzah!!")
-//     }
-//     else if (selectedOpponent === undefined || selectedOpponent.length == 0)
-//         document.write("You reign Attack Kitten Supreme, Huzzah!!")
+    })
 });
-
