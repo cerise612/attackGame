@@ -46,7 +46,7 @@ var batmanCharacters = {
     loadBatmans: function () {
         this.batmansInfo = [
             { name: "West", healthPoints: 100, attackPoints: 10, counterAttackPoints: 15, imageFile: "assets/images/west.png", isAlive: true },
-            { name: "Keaton", healthPoints: 100, attackPoints: 10, counterAttackPoints: 20, imageFile: "assets/images/Keaton.png", isAlive: true },
+            { name: "Keaton", healthPoints: 100, attackPoints: 10, counterAttackPoints: 20, imageFile: "assets/images/keaton.png", isAlive: true },
             { name: "Kilmer", healthPoints: 80, attackPoints: 9, counterAttackPoints: 25, imageFile: "assets/images/kilmer.png", isAlive: true },
             { name: "Bale", healthPoints: 150, attackPoints: 30, counterAttackPoints: 10, imageFile: "assets/images/bale.png", isAlive: true }];
         this.remainingBatmen = this.batmansInfo.length;
